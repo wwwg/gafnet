@@ -1,11 +1,13 @@
 #pragma once
+
 #ifndef _GAF_UTIL_H
 #define _GAF_UTIL_H
 
-void gafnet_debug(char* msg) {
-	if (GAFNET_DEBUG) {
-		printf("gafnet:debug: %s\n", msg);
-	}
-}
+#include "gafpacket.h"
+
+void gafnet_debug(char*);
+
+typedef void (*gafnet_callback_default)(void);
+typedef void (*gafnet_callback_onmessage)(gafpacket);
 
 #endif

@@ -3,10 +3,10 @@
 #define _GAF_PACKET_H
 
 #include <string.h>
-
+//todo
 struct gaf_packet {
 	char* data;
 	size_t len;
-}
+};
 
 #endif

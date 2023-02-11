@@ -13,14 +13,39 @@
 
 #include <string.h>
 
-struct gafnode {
-	int port;
+#include "gafpacket.h"
+
+#include "gafutil.h"
+
+/*
+	avalible callbacks:
+	on_listen_start
+	on_listen_end
+	on_client_open
+	on_client_close
+	on_message(gafpacket packet)
+*/
+
+struct gafnode_client {
+	//public
+	int listen_port;
 	size_t peers_count;
 
+	char* hostname;
+	size_t hostname_len;
+
+	//private
 	int _peers_sock[GAFNET_MAX_PEERS];
 	int _listen_sock;
+	struct sockaddr_in _listen_addr;
+	//callbacks
+	gafnet_callback_default _on_listen_start;
 };
 
-struct gafnode* init_gafnode(int);
+struct gafnode_client* gafnode_init_client(char*, int);
+void gafnode_destroy_client(struct gafnode_client*);
+
+void gafnode_set_on_listen_start(gafnet_callback_default);
+void gafnode_set_on_listen_end(gafnet_callback_default);
 
 #endif
