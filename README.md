@@ -1,2 +1,2 @@
 # gafnet
-P2P communication written in C
+P2P communication library for C. Maybe in the future use for cryptocurrency?
