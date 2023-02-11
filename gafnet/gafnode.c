@@ -38,4 +38,3 @@ void gafnode_destroy_client(struct gafnode_client* c) {
 	free(c->hostname);
 	free(c);
 }
-

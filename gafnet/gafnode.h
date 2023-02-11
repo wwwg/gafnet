@@ -18,6 +18,7 @@
 #include "gafutil.h"
 
 /*
+	gafnode_client : network implementation of a gaf node
 	avalible callbacks:
 	on_listen_start
 	on_listen_end
@@ -34,18 +35,26 @@ struct gafnode_client {
 	char* hostname;
 	size_t hostname_len;
 
+	//callbacks
+	gafnet_callback_default on_listen_start;
+	gafnet_callback_default on_listen_end;
+
 	//private
 	int _peers_sock[GAFNET_MAX_PEERS];
 	int _listen_sock;
 	struct sockaddr_in _listen_addr;
-	//callbacks
-	gafnet_callback_default _on_listen_start;
 };
 
 struct gafnode_client* gafnode_init_client(char*, int);
 void gafnode_destroy_client(struct gafnode_client*);
 
-void gafnode_set_on_listen_start(gafnet_callback_default);
-void gafnode_set_on_listen_end(gafnet_callback_default);
+void gafnode_set_on_listen_start(struct gafnode_client*, gafnet_callback_default);
+void gafnode_set_on_listen_end(struct gafnode_client*, gafnet_callback_default);
+
+// gafnode : abstract representation of node on network
+
+struct gafnode {
+	int peer_socket;
+}
 
 #endif
