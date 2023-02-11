@@ -39,7 +39,7 @@ struct gafnode_client {
 	gafnet_callback_default on_listen_end;
 
 	//private
-	int _peers_sock[GAFNET_MAX_PEERS];
+	gafnode peers[GAFNET_MAX_PEERS];
 	int _listen_sock;
 	struct sockaddr_in _listen_addr;
 };
@@ -52,8 +52,13 @@ void gafnode_set_on_listen_end(struct gafnode_client*, gafnet_callback_default);
 
 // gafnode : abstract representation of node on network
 
+struct gafnode;
+
 struct gafnode {
 	int peer_socket;
+	char* hostname;
+	gafnode* peers;
+	size_t total_peers;
 };
 
 #endif
