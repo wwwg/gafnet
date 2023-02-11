@@ -1,7 +1,7 @@
 CC=gcc
 
 SRC=gafnet/*.c
-SRC_OPTS=-lpthread
+SRC_OPTS=-lpthread -D GAFNET_DEBUG
 
 TEST=test/*.c
 TEST_OPTS=$(SRC_OPTS) -Igafnet/ -Lgafnet/
