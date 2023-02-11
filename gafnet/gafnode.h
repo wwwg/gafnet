@@ -18,12 +18,22 @@
 // struct gafnode;
 
 typedef struct {
+	//public
 	int peer_socket;
-	char* hostname;
-	size_t hostname_len;
+
+	char* node_id;
+	size_t node_id_len;
+
 	struct gafnode* peers;
 	size_t total_peers;
+
+	//private
+	char* _dest_addr;
+	int _dest_port;
 } gafnode;
+
+gafnode* create_peer_from(char*, int);
+void destroy_gafnode(gafnode*);
 
 /*
 	gafnode_client : network implementation of a gaf node
@@ -40,8 +50,8 @@ typedef struct {
 	int listen_port;
 	size_t peers_count;
 
-	char* hostname;
-	size_t hostname_len;
+	char* node_id;
+	size_t node_id_len;
 
 	//callbacks
 	gafnet_callback_default on_listen_start;
@@ -50,6 +60,9 @@ typedef struct {
 	//private
 	gafnode _outgoing_peers[GAFNET_MAX_PEERS];
 	gafnode _incoming_peers[GAFNET_MAX_PEERS];
+	int _outgoing_conns;
+	int _incoming_conns;
+
 	int _listen_sock;
 	struct sockaddr_in _listen_addr;
 } gafnode_client;
@@ -57,5 +70,7 @@ typedef struct {
 gafnode_client* gafnode_init_client(char*, int);
 void gafnode_destroy_client(gafnode_client*);
 void gafnode_start_listen(gafnode_client*);
+
+
 
 #endif

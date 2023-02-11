@@ -8,14 +8,25 @@
 #include "gafnode.h"
 #include "gafpacket.h"
 
+// gafnode abstract peer struct
+
+gafnode* create_peer_from(char* ip, int port) {
+	//
+}
+void destroy_gafnode(gafnode* g) {
+	//
+}
+
+// gafnode client
+
 gafnode_client* gafnode_init_client(char* host, int listen_port) {
 	// free all of these when destroying the node
 	gafnode_client* node = malloc(sizeof(gafnode_client));
 	bzero(node, sizeof(gafnode_client)); // you never know!
 
-	node->hostname_len = strlen(host);
-	node->hostname = malloc(node->hostname_len);
-	strncpy(node->hostname, host, node->hostname_len);
+	node->node_id_len = strlen(host);
+	node->node_id = malloc(node->node_id_len);
+	strncpy(node->node_id, host, node->node_id_len);
 
 	int _port = GAFNET_DEFAULT_LISTEN; // 6162
 	int opt = 1;
@@ -59,6 +70,6 @@ void gafnode_start_listen(gafnode_client* c) {
 }
 
 void gafnode_destroy_client(gafnode_client* c) {
-	free(c->hostname);
+	free(c->node_id);
 	free(c);
 }
