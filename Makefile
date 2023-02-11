@@ -1,10 +1,10 @@
 CC=gcc
 
 SRC=gafnet/*.c
-SRC_OPTS=
+SRC_OPTS=-ldlib
 
 TEST=test/*.c
-TEST_OPTS=-Igafnet/ -Lgafnet/
+TEST_OPTS=$(SRC_OPTS) -Igafnet/ -Lgafnet/
 TEST_OUT=./gaftest
 
 default:
