@@ -11,11 +11,12 @@
 gafnode_client* gafnode_init_client(char* host, int listen_port) {
 	// free all of these when destroying the node
 	gafnode_client* node = malloc(sizeof(gafnode_client));
+	bzero(node, sizeof(gafnode_client)); // you never know!
+
 	node->hostname_len = strlen(host);
 	node->hostname = malloc(node->hostname_len);
 	strncpy(node->hostname, host, node->hostname_len);
 
-	bzero(node, sizeof(gafnode_client)); // you never know!
 	int _port = GAFNET_DEFAULT_LISTEN; // 6162
 	int opt = 1;
 	if (listen_port != 0) {
@@ -39,6 +40,22 @@ gafnode_client* gafnode_init_client(char* host, int listen_port) {
 		return (gafnode_client*)NULL;
 	}
 	return node;
+}
+void gafnode_start_listen(gafnode_client* c) {
+	if (listen(c->_listen_sock, GAFNET_MAX_PEERS) < 0) {
+		// listen fail
+		gafnet_debug("failed to listen in gafnode listen");
+		if (c->on_listen_end != 0) {
+			c->on_listen_end();
+		}
+	}
+	if (c->on_listen_start != 0) {
+		c->on_listen_start();
+	}
+	// from here on out listen for connections?
+	while (1) {
+		//
+	}
 }
 
 void gafnode_destroy_client(gafnode_client* c) {

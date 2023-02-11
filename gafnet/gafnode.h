@@ -48,7 +48,8 @@ typedef struct {
 	gafnet_callback_default on_listen_end;
 
 	//private
-	gafnode peers[GAFNET_MAX_PEERS];
+	gafnode _outgoing_peers[GAFNET_MAX_PEERS];
+	gafnode _incoming_peers[GAFNET_MAX_PEERS];
 	int _listen_sock;
 	struct sockaddr_in _listen_addr;
 } gafnode_client;
