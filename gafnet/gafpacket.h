@@ -4,6 +4,8 @@
 
 #include <string.h>
 
+struct gafnode;
+
 typedef struct {
 	char* data;
 	size_t len;
@@ -11,7 +13,9 @@ typedef struct {
 
 typedef struct {
 	gaf_packet_simple _packet;
-	
+	unsigned int hops;
+	gafnode* src;
+	gafnode* dest;
 } gaf_packet;
 
 #endif

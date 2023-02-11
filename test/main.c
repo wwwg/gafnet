@@ -1,7 +1,7 @@
 #include <gafnode.h>
 
 int main(int argc, char* argv[]) {
-	struct gafnode_client* g = gafnode_init_client("testnode", 8080);
+	gafnode_client* g = gafnode_init_client("testnode", 8080);
 	if (g == 0) {
 		printf("failed to mk gafnode\n");
 		return 1;

@@ -10,15 +10,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
-
 #include <string.h>
 
-#include "gafpacket.h"
 #include "gafutil.h"
 
 // gafnode : abstract representation of node on network
-struct gafnode;
-typedef struct gafnode;
+// struct gafnode;
 
 typedef struct {
 	int peer_socket;
@@ -38,7 +35,7 @@ typedef struct {
 	on_message(gafpacket packet)
 */
 
-struct gafnode_client {
+typedef struct {
 	//public
 	int listen_port;
 	size_t peers_count;
@@ -54,9 +51,10 @@ struct gafnode_client {
 	gafnode peers[GAFNET_MAX_PEERS];
 	int _listen_sock;
 	struct sockaddr_in _listen_addr;
-};
+} gafnode_client;
 
-struct gafnode_client* gafnode_init_client(char*, int);
-void gafnode_destroy_client(struct gafnode_client*);
+gafnode_client* gafnode_init_client(char*, int);
+void gafnode_destroy_client(gafnode_client*);
+void gafnode_start_listen(gafnode_client*);
 
 #endif

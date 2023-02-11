@@ -21,4 +21,4 @@ test-run:
 	./$(TEST_OUT)
 
 clean:
-	rm *.o
+	rm -f *.o
