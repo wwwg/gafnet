@@ -16,6 +16,18 @@
 #include "gafpacket.h"
 #include "gafutil.h"
 
+// gafnode : abstract representation of node on network
+struct gafnode;
+typedef struct gafnode;
+
+typedef struct {
+	int peer_socket;
+	char* hostname;
+	size_t hostname_len;
+	struct gafnode* peers;
+	size_t total_peers;
+} gafnode;
+
 /*
 	gafnode_client : network implementation of a gaf node
 	avalible callbacks:
@@ -46,19 +58,5 @@ struct gafnode_client {
 
 struct gafnode_client* gafnode_init_client(char*, int);
 void gafnode_destroy_client(struct gafnode_client*);
-
-void gafnode_set_on_listen_start(struct gafnode_client*, gafnet_callback_default);
-void gafnode_set_on_listen_end(struct gafnode_client*, gafnet_callback_default);
-
-// gafnode : abstract representation of node on network
-
-struct gafnode;
-
-struct gafnode {
-	int peer_socket;
-	char* hostname;
-	gafnode* peers;
-	size_t total_peers;
-};
 
 #endif
