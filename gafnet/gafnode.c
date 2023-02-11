@@ -1,5 +1,4 @@
 #include "gafnode.h"
-#include "gafutil.h"
 
 struct gafnode_client* gafnode_init_client(char* host, int listen_port) {
 	// free all of these when destroying the node

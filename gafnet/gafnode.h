@@ -14,7 +14,6 @@
 #include <string.h>
 
 #include "gafpacket.h"
-
 #include "gafutil.h"
 
 /*
@@ -55,6 +54,6 @@ void gafnode_set_on_listen_end(struct gafnode_client*, gafnet_callback_default);
 
 struct gafnode {
 	int peer_socket;
-}
+};
 
 #endif
