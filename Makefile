@@ -15,5 +15,9 @@ test-net:
 	$(CC) $(TEST_OPTS) -c $(TEST)
 	$(CC) $(TEST_OPTS) -o $(TEST_OUT) *.o
 
+test-run:
+	make test-net
+	./$(TEST_OUT)
+
 clean:
 	rm *.o
