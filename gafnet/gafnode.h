@@ -3,6 +3,7 @@
 #define _GAF_NODE_H
 
 #define GAFNET_MAX_PEERS 50
+#define GAFNET_DEFAULT_LISTEN 6162
 
 #include <netinet/in.h>
 #include <stdio.h>
