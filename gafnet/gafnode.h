@@ -19,7 +19,6 @@
 
 typedef struct {
 	//public
-	int peer_socket;
 
 	char* node_id;
 	size_t node_id_len;
@@ -27,13 +26,18 @@ typedef struct {
 	struct gafnode* peers;
 	size_t total_peers;
 
+	gafnet_conn_type conn_type;
+
 	//private
 	char* _dest_addr;
 	int _dest_port;
+	struct sockaddr_in _dest_addr_s;
+	int _peer_socket;
+	int _peer_fd;
 } gafnode;
 
-gafnode* create_peer_from(char*, int);
-void destroy_gafnode(gafnode*);
+gafnode* gafnode_create_peer_from(char*, int);
+void gafnode_destroy(gafnode*);
 
 /*
 	gafnode_client : network implementation of a gaf node
@@ -42,7 +46,9 @@ void destroy_gafnode(gafnode*);
 	on_listen_end
 	on_client_open
 	on_client_close
-	on_message(gafpacket packet)
+	on_incoming_message(gafpacket packet)
+	on_outgoing_message(gafpacket packet)
+	on_new_peer(gafnode* node)
 */
 
 typedef struct {
@@ -56,10 +62,11 @@ typedef struct {
 	//callbacks
 	gafnet_callback_default on_listen_start;
 	gafnet_callback_default on_listen_end;
+	gafnet_callback_onnewpeer on_new_peer;
 
 	//private
-	gafnode _outgoing_peers[GAFNET_MAX_PEERS];
-	gafnode _incoming_peers[GAFNET_MAX_PEERS];
+	gafnode* _client_peers[GAFNET_MAX_PEERS];
+	gafnode* _server_peers[GAFNET_MAX_PEERS];
 	int _outgoing_conns;
 	int _incoming_conns;
 
@@ -70,7 +77,7 @@ typedef struct {
 gafnode_client* gafnode_init_client(char*, int);
 void gafnode_destroy_client(gafnode_client*);
 void gafnode_start_listen(gafnode_client*);
-
+int gafnode_connect_to(gafnode*);
 
 
 #endif

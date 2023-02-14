@@ -10,14 +10,52 @@
 
 // gafnode abstract peer struct
 
-gafnode* create_peer_from(char* ip, int port) {
-	//
+gafnode* gafnode_create_peer_from(gafnode_client*, client, char* ip, int port) {
+	// create the node
+	gafnode* node = malloc(sizeof(gafnode));
+	bzero(node, sizeof(gafnode));
+	// 
+	size_t _dest_addr_len = strlen(ip);
+	node->_dest_addr = malloc(_dest_addr_len);
+	strncpy(node->_dest_addr, ip, _dest_addr_len);
+
+	node->_dest_port = port;
+
+	node->_peer_socket = socket(AF_INET, SOCK_STREAM, 0);
+	if (node->_peer_socket < 0) {
+		//socket mk error
+		gafnet_debug("failed to create socket in create_peer_from");
+		gafnode_destroy(node);
+		return (gafnode*)NULL;
+	}
+
+	// server address
+	node->_dest_addr_s.sin_family = AF_INET;
+	node->_dest_addr_s.sin_port = htons(port);
+	// validate it
+	if (inet_pton(AF_INET, node->_dest_addr, &node->_dest_addr_s.sin_addr) <= 0) {
+		gafnet_debug("invalid address in create_peer_from");
+		gafnode_destroy(node);
+		return (gafnode*)NULL;
+	}
+	return node;
 }
-void destroy_gafnode(gafnode* g) {
-	//
+void gafnode_destroy(gafnode* node) {
+	free(node->_dest_addr);
+	free(node);
 }
 
 // gafnode client
+
+int gafnode_connect_to(gafnode_client client, gafnode* node) {
+	if (node->_peer_fd = connect(node->_peer_socket, (struct sockaddr*)&node->_dest_addr_s, sizeof(node->_dest_addr_s)) < 0) {
+		// connection failed
+		gafnet_debug("gafnode could not connect in gafnode_connect_to");
+		return 1;
+	}
+	if ()
+	return 0;
+}
 
 gafnode_client* gafnode_init_client(char* host, int listen_port) {
 	// free all of these when destroying the node
@@ -27,6 +65,9 @@ gafnode_client* gafnode_init_client(char* host, int listen_port) {
 	node->node_id_len = strlen(host);
 	node->node_id = malloc(node->node_id_len);
 	strncpy(node->node_id, host, node->node_id_len);
+	for (int i = 0; i < GAFNET_MAX_PEERS; i += 1) {
+		node->_client_peers[i] = (void*)0;
+	}
 
 	int _port = GAFNET_DEFAULT_LISTEN; // 6162
 	int opt = 1;
