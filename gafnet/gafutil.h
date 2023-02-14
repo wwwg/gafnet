@@ -4,25 +4,24 @@
 #define _GAF_UTIL_H
 
 #ifndef _GAF_PACKET_H
-struct gafpacket;
-typedef struct gafpacket gafpacket;
+#include "packet.h"
 #endif
+
+struct gaf_packet;
 
 void gafnet_debug(char*);
-
+/*
 typedef void (*gafnet_callback_default)(void);
-typedef void (*gafnet_callback_onmessage)(gafpacket*);
+typedef void (*gafnet_callback_onmessage)(struct gaf_packet*);
 
-#ifndef _GAF_NODE_H
-struct gafnode;
-typedef struct gafnode gafnode;
-#endif
-
-typedef void (*gafnet_callback_onnewpeer)(struct gafnode*);
-
+//struct gafnode;
+//typedef struct gafnode gafnode;
+*/
+// /typedef void (*gafnet_callback_onnewpeer)(struct gafnode*);
+/*
 typedef enum {
 	GAFNET_INCOMING = 1,
 	GAFNET_OUTGOING = 2
 } gafnet_conn_type;
-
+*/
 #endif

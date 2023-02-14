@@ -4,6 +4,7 @@
 
 #define GAFNET_MAX_PEERS 50
 #define GAFNET_DEFAULT_LISTEN 6162
+#define GAFNET_NAME_MAX_LENGTH 20
 
 #include <netinet/in.h>
 #include <stdio.h>
@@ -13,6 +14,16 @@
 #include <string.h>
 
 #include "gafutil.h"
+
+
+typedef void (*gafnet_callback_default)(void);
+typedef void (*gafnet_callback_onmessage)(struct gaf_packet*);
+typedef void (*gafnet_callback_onnewpeer)(struct gafnode*);
+
+typedef enum {
+	GAFNET_INCOMING = 1,
+	GAFNET_OUTGOING = 2
+} gafnet_conn_type;
 
 // gafnode : abstract representation of node on network
 // struct gafnode;
@@ -36,7 +47,7 @@ typedef struct {
 	int _peer_fd;
 } gafnode;
 
-gafnode* gafnode_create_peer_from(char*, int);
+gafnode* _gafnode_init_peer_from(char*, int);
 void gafnode_destroy(gafnode*);
 
 /*
@@ -64,20 +75,28 @@ typedef struct {
 	gafnet_callback_default on_listen_end;
 	gafnet_callback_onnewpeer on_new_peer;
 
-	//private
-	gafnode* _client_peers[GAFNET_MAX_PEERS];
-	gafnode* _server_peers[GAFNET_MAX_PEERS];
-	int _outgoing_conns;
-	int _incoming_conns;
+	// OUTGOING
+	gafnode* client_peers[GAFNET_MAX_PEERS];
+	int active_client_peers_count;
+
+	// INCOMING
+	gafnode* server_peers[GAFNET_MAX_PEERS];
+	int active_server_peers_count;
+
+	// private
 
 	int _listen_sock;
 	struct sockaddr_in _listen_addr;
+	int _listen_addr_len;
 } gafnode_client;
 
 gafnode_client* gafnode_init_client(char*, int);
+void _gafnode_client_add_peer(gafnode_client* c, gafnode* node);
 void gafnode_destroy_client(gafnode_client*);
 void gafnode_start_listen(gafnode_client*);
-int gafnode_connect_to(gafnode*);
+gafnode* gafnode_connect(gafnode*);
+gafnode* create_gafnode_client_peer(gafnode_client* c, char* ip, int port);
+gafnode* _gafnode_create_server_client_peer(int);
 
 
 #endif
