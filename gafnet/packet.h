@@ -3,12 +3,12 @@
 #define _GAF_PACKET_H
 
 #include <string.h>
+
+// typedef struct gafnode_client gafnode_client;
 #include "gafnode.h"
 
 #define GAFNET_TOKEN 9847
 #define MAX_HOPS 2
-
-struct gafnode_client;
 
 typedef struct {
 	char* data;
@@ -32,6 +32,7 @@ typedef struct {
 	char* data;
 } gaf_packet;
 
-gaf_packet gafnet_construct_packet(struct gafnode_client*, char* /* MUST BE A C STRING */, char*, unsigned int);
+gaf_packet gafnet_construct_packet(char*, char* /* MUST BE A C STRING */, char*, unsigned int);
+void gafnet_destroy_packet(gaf_packet*);
 
 #endif

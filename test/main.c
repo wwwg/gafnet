@@ -23,6 +23,8 @@ void thread_run(void* arg) {
 	//connect to server
 	gafnode* origin_node = create_gafnode_client_peer(client, ORIGIN_NODE_HOST, ORIGIN_NODE_PORT);
 	gafnode_connect(origin_node);
+
+	
 }
 
 void origin_onlisten() {

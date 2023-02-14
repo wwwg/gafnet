@@ -6,7 +6,6 @@
 #include <string.h>
 
 #include "gafnode.h"
-#include "packet.h"
 
 
 gafnode* _gafnode_init_peer_from(char* ip, int port) {
@@ -66,7 +65,7 @@ gafnode* gafnode_connect(gafnode* node) {
 	if (node->_peer_fd = connect(node->_peer_socket, (struct sockaddr*)&node->_dest_addr_s, sizeof(node->_dest_addr_s)) < 0) {
 		// connection failed
 		gafnet_debug("gafnode could not connect in gafnode_connect_to");
-		return 1;
+		return (gafnode*)0;
 	}
 
 	gafnet_debug("gafnode successfully connected to destination");
